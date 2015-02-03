@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Brainfuck Interpreter</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <!-- Include script for interpreter !-->
+    <script src="interpreter.min.js"></script>
+
+    <style>
+    textarea {
+        width: 100%;
+        height: 8em;
+        font-family: Consolas, Courier New, monospace;
+        resize: none;
+    }
+    button {
+        width: 100%;
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center">Brainfuck <small>by <a href="https//mooxmirror.io">mooxmirror.io</a></small></h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="text-uppercase">Brainfuck</label>
+            <textarea id="code" placeholder="// code"></textarea>
+        </div>
+        <div class="col-md-3">
+            <label class="text-uppercase">Input data</label>
+            <textarea id="input" placeholder="// input"></textarea>
+        </div>
+        <div class="col-md-3">
+            <label class="text-uppercase">Output data (not editable)</label>
+            <textarea id="output" placeholder="// output" readonly="readonly"></textarea>
+        </div>
+    </div>
+    <hr>
+    <script>
+    function run() {
+        $('#output').val(interpret($('#code').val(), $('#input').val()));
+    };
+    function clear() {
+        $('#input').val('');
+        $('#code').val('');
+    };
+    </script>
+    <div class="row">
+        <div class="col-sm-2">
+            <button id="runButton" class="btn btn-primary" onclick="run()">Run</button>
+        </div>
+        <div class="col-sm-2">
+            <button id="clearButton" class="btn btn-danger" onclick="clear()">Clear</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
