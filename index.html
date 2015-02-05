@@ -12,7 +12,7 @@
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!-- Include script for interpreter !-->
-    <script src="interpreter.min.js"></script>
+    <script src="interpreter.js"></script>
 
     <style>
     textarea {
@@ -31,6 +31,12 @@
         font-size: 0.8em;
         text-align: center;
     }
+    #code {
+        height: 400px;
+    }
+    #maxIter {
+        width: 100%;
+    }
     </style>
 </head>
 <body>
@@ -38,17 +44,21 @@
     <h2 class="text-center">Brainfuck <small>by <a href="https//mooxmirror.io">mooxmirror.io</a></small></h2>
     <hr>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-12">
             <label class="text-uppercase">Brainfuck</label>
             <textarea id="code" placeholder="// code"></textarea>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label class="text-uppercase">Input data</label>
             <textarea id="input" placeholder="// input"></textarea>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label class="text-uppercase">Output data (not editable)</label>
             <textarea id="output" placeholder="// output" readonly="readonly"></textarea>
+        </div>
+        <div class="col-md-4">
+            <label class="text-uppercase">Maximum iterations</label>
+            <br><input type="number" id="maxIter" placeholder="// maximum iterations" value="0">
         </div>
     </div>
     <hr>
@@ -63,7 +73,7 @@
     <script>
     $(function() {
         $('#runButton').click(function() {
-            $('#output').val(interpret($('#code').val(), $('#input').val()));
+            $('#output').val(interpret($('#code').val(), $('#input').val(), parseInt($('#maxIter').val())));
         });
         $('#clearButton').click(function() {
             $('#input').val('');

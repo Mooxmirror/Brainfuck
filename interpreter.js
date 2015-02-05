@@ -5,13 +5,14 @@ A small Brainfuck interpreter written in JavaScript.
 
 */
 
-function interpret(code, input) {
+function interpret(code, input, max) {
     var currentIndex = 0,
         currentChar = '',
         inputIndex = 0,
         dataStorage = [0],
         dataIndex = 0,
-        output = '';
+        output = '',
+        iter = 0;
 
     var getLoopStart = function(code, current) {
         var lvl = 0,
@@ -84,6 +85,9 @@ function interpret(code, input) {
                     currentIndex = getLoopStart(code, currentIndex);
                 break;
         }
+
+        iter++;
+        if (max > 0 && max < iter) return output;
     }
     return output;
 }
