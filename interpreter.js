@@ -5,15 +5,16 @@ A small Brainfuck interpreter written in JavaScript.
 
 */
 
-function interpret(code, input, max) {
-    var currentIndex = 0,
-        currentChar = '',
-        inputIndex = 0,
-        dataStorage = [0],
-        dataIndex = 0,
-        output = '',
-        iter = 0;
+function interpret(code, input, max, binaryMode) {
+    var currentIndex = 0, // current command index positionn
+        currentChar = '', // currently selected character
+        inputIndex = 0,  // input pointer position
+        dataStorage = [0], // data storage array
+        dataIndex = 0, // data pointer position
+        output = '', // generated output
+        iter = 0; // iterator for maximum iteration settings
 
+    /* Finds the next loop start position for a given loop end x */
     var getLoopStart = function(code, current) {
         var lvl = 0,
             currentChar = '';
@@ -30,6 +31,7 @@ function interpret(code, input, max) {
         }
         return -1;
     };
+    /* Finds the next loop end position for a given loop start x   */
     var getLoopEnd = function(code, current) {
         var lvl = 0,
             currentChar = '';
@@ -46,6 +48,34 @@ function interpret(code, input, max) {
         }
         return -1;
     };
+
+    /* Parses binary data (01010101) to characters (numbers) */
+    var binToChar = function(binaryData) {
+        var short = binaryData.replace(/[^01]/g, ''), byteIndex = 0, genInput = '';
+
+        if (short.length % 8 != 0) {
+            throw "Valid character count is not a multiple of 8.";
+        }
+        for (byteIndex = 0; byteIndex < input.length; byteIndex += 8)  {
+            genInput += String.fromCharCode(parseInt(short.substr(byteIndex, 8), 2));
+        }
+
+        return genInput;
+    }
+    /* Parses a string to a list of binary numbers seperated by line feeds */
+    var charToBin = function(output) {
+        var genOutput = '', byteSegment = '';
+
+        for (byteIndex = 0; byteIndex < output.length; byteIndex += 1) {
+            byteSegment = output.charCodeAt(byteIndex).toString(2);
+            while (byteSegment.length < 8) byteSegment = '0' + byteSegment;
+            genOutput += byteSegment + '\n';
+        }
+
+        return genOutput;
+    }
+
+    if (binaryMode) input = binToChar(input);
 
     code = code.replace(/[^<>,\.\[\]\+-]/g, '');
 
@@ -89,5 +119,7 @@ function interpret(code, input, max) {
         iter++;
         if (max > 0 && max < iter) return output;
     }
+
+    if (binaryMode) output = charToBin(output);
     return output;
 }

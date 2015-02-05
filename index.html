@@ -12,7 +12,7 @@
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!-- Include script for interpreter !-->
-    <script src="interpreter.min.js"></script>
+    <script src="interpreter.js"></script>
 
     <style>
     textarea {
@@ -21,7 +21,7 @@
         font-family: Consolas, Courier New, monospace;
         resize: none;
     }
-    button {
+    #binaryButton, #runButton, #clearButton {
         width: 100%;
     }
     footer {
@@ -32,7 +32,7 @@
         text-align: center;
     }
     #code {
-        height: 400px;
+        height: 16em;
     }
     #maxIter {
         width: 100%;
@@ -43,8 +43,12 @@
 <div class="container">
     <h2 class="text-center">Brainfuck <small>by <a href="//mooxmirror.io">mooxmirror.io</a></small></h2>
     <hr>
+    <div id="alertRegion">
+    <!-- Testing alerts !-->
+    </div>
+
     <div class="row">
-        <div class="col-md-6 col-xs-12">
+        <div class="col-md-8 col-xs-12">
             <label class="text-uppercase">Brainfuck</label>
             <textarea id="code" placeholder="// code"></textarea>
         </div>
@@ -58,7 +62,18 @@
         </div>
         <div class="col-md-4">
             <label class="text-uppercase">Maximum iterations</label>
-            <br><input type="number" id="maxIter" placeholder="// maximum iterations" value="0">
+            <p><input type="number" id="maxIter" placeholder="// maximum iterations" value="0"></p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" id="binaryButton" autocomplete="off">
+                    Binary mode: <strong>OFF</strong>
+                </button>
+            </p>
+        </div>
+        <div class="col-md-4" id="binaryModeInfo">
+            In binary mode, input should only contain 0 and 1 - other characters will be removed.
+            Eight characters (one byte) will be parsed to ONE input segment. Also the output is parsed into binary characters.
         </div>
     </div>
     <hr>
@@ -71,14 +86,56 @@
         </div>
     </div>
     <script>
+
     $(function() {
         $('#runButton').click(function() {
-            $('#output').val(interpret($('#code').val(), $('#input').val(), parseInt($('#maxIter').val())));
+            var showErrorBox = function(msg) {
+                var box = $('<div>')
+                    .addClass('alert')
+                    .addClass('alert-danger')
+                    .addClass('alert-dismissible')
+                    .attr('role', 'alert');
+                var button = $('<button>')
+                    .attr('type', 'button')
+                    .addClass('close')
+                    .attr('data-dismiss', 'alert')
+                    .attr('aria-label', 'Close');
+                var closeIcon = $('<span>')
+                    .attr('aria-hidden', 'true')
+                    .html('&times;');
+                var message = $('<span>')
+                    .html('<strong>Warning!</strong> ' + msg);
+                button.append(closeIcon);
+                box.append(button);
+                box.append(message);
+                $('#alertRegion').append(box);
+                box.delay(2000).hide(200);
+            }
+
+            try {
+                $('#output').val(interpret($('#code').val(),$('#input').val(),parseInt($('#maxIter').val()),($('#binaryButton').attr('aria-pressed') === 'true')));
+            } catch (e) {
+                showErrorBox(e);
+            }
         });
         $('#clearButton').click(function() {
             $('#input').val('');
             $('#code').val('');
         });
+        $('#binaryButton').click(function() {
+            $(this)
+                .toggleClass('btn-default')
+                .toggleClass('btn-success');
+            $('#binaryModeInfo').toggle(300);
+
+            if ($(this).attr('aria-pressed') == 'false') {
+                $(this).html('Binary mode: <strong>ON</strong>');
+            }
+            else {
+                $(this).html('Binary mode: <strong>OFF</strong>');
+            }
+        });
+        $('#binaryModeInfo').hide();
     });
     </script>
     <hr>
