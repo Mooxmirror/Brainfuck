@@ -1,147 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Brainfuck</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <!-- Include script for interpreter !-->
-    <script src="interpreter.js"></script>
 
-    <style>
+<html lang="en">
+
+<head>
+  <title>Brainfuck</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">"
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <!-- Include script for interpreter !-->
+
+  <script src="interpreter.js"></script>
+
+  <style>
     textarea {
-        width: 100%;
-        height: 8em;
-        font-family: Consolas, Courier New, monospace;
-        resize: none;
+      width: 100%;
+      height: 8em;
+      font-family: Consolas, Courier New, monospace;
+      resize: none;
     }
-    #binaryButton, #runButton, #clearButton {
-        width: 100%;
+
+    #binaryButton,
+    #runButton,
+    #clearButton {
+      width: 100%;
     }
+
     footer {
-        color: #666;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 0.8em;
-        text-align: center;
+      color: #666;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.8em;
+      text-align: center;
     }
+
     #code {
-        height: 400px;
+      height: 400px;
     }
+
     #maxIter {
-        width: 100%;
+      width: 100%;
     }
-    </style>
+  </style>
 </head>
+
 <body>
-<div class="container">
-    <h2 class="text-center">Brainfuck <small>by <a href="//mooxmirror.io">mooxmirror.io</a></small></h2>
+  <div class="container">
+    <h2 class="text-center">Brainfuck
+      <small>by <a href="//mooxmirror.io">mooxmirror.io</a></small>
+    </h2>
     <hr>
     <div id="alertRegion">
-    <!-- Testing alerts !-->
+      <!-- Testing alerts !-->
     </div>
 
     <div class="row">
-        <div class="col-md-8">
-            <label class="text-uppercase">Brainfuck</label>
-            <textarea id="code" placeholder="// code"></textarea>
-        </div>
-        <div class="col-md-4">
-            <label class="text-uppercase">Input data</label>
-            <textarea id="input" placeholder="// input"></textarea>
-        </div>
-        <div class="col-md-4">
-            <label class="text-uppercase">Output data (not editable)</label>
-            <textarea id="output" placeholder="// output" readonly="readonly"></textarea>
-        </div>
-        <div class="col-md-4">
-            <label class="text-uppercase">Maximum iterations</label>
-            <p><input type="number" id="maxIter" placeholder="// maximum iterations" value="0"></p>
-        </div>
-        <div class="col-md-4">
-            <p>
-                <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" id="binaryButton" autocomplete="off">
-                    Binary mode: <strong>OFF</strong>
-                </button>
-            </p>
-        </div>
-        <div class="col-md-4" id="binaryModeInfo">
-            In binary mode, input should only contain 0 and 1 - other characters will be removed.
-            Eight characters (one byte) will be parsed to ONE input segment. Also the output is parsed into binary characters.
-        </div>
+      <div class="col-md-8">
+        <label class="text-uppercase">Brainfuck</label>
+        <textarea id="code" placeholder="// code"></textarea>
+      </div>
+      <div class="col-md-4">
+        <label class="text-uppercase">Input data</label>
+        <textarea id="input" placeholder="// input"></textarea>
+      </div>
+      <div class="col-md-4">
+        <label class="text-uppercase">Output data (not editable)</label>
+        <textarea id="output" placeholder="// output" readonly="readonly"></textarea>
+      </div>
+      <div class="col-md-4">
+        <label class="text-uppercase">Maximum iterations</label>
+        <p>
+          <input type="number" id="maxIter" placeholder="// maximum iterations" value="0">
+        </p>
+      </div>
+      <div class="col-md-4">
+        <p>
+          <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" id="binaryButton" autocomplete="off">
+            Binary mode:
+            <strong>OFF</strong>
+          </button>
+        </p>
+      </div>
+      <div class="col-md-4" id="binaryModeInfo">
+        In binary mode, input should only contain 0 and 1 - other characters will be removed. Eight characters (one byte) will be parsed to ONE input segment. Also the output is parsed into binary characters.
+      </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-2">
-            <p><button id="runButton" class="btn btn-primary">Run</button></p>
-        </div>
-        <div class="col-sm-2">
-            <p><button id="clearButton" class="btn btn-danger">Clear</button></p>
-        </div>
+      <div class="col-sm-2">
+        <p>
+          <button id="runButton" class="btn btn-primary">Run</button>
+        </p>
+      </div>
+      <div class="col-sm-2">
+        <p>
+          <button id="clearButton" class="btn btn-danger">Clear</button>
+        </p>
+      </div>
     </div>
     <script>
-
-    $(function() {
+      $(function() {
         $('#runButton').click(function() {
-            var showErrorBox = function(msg) {
-                var box = $('<div>')
-                    .addClass('alert')
-                    .addClass('alert-danger')
-                    .addClass('alert-dismissible')
-                    .attr('role', 'alert');
-                var button = $('<button>')
-                    .attr('type', 'button')
-                    .addClass('close')
-                    .attr('data-dismiss', 'alert')
-                    .attr('aria-label', 'Close');
-                var closeIcon = $('<span>')
-                    .attr('aria-hidden', 'true')
-                    .html('&times;');
-                var message = $('<span>')
-                    .html('<strong>Warning!</strong> ' + msg);
-                button.append(closeIcon);
-                box.append(button);
-                box.append(message);
-                $('#alertRegion').append(box);
-                box.delay(2000).hide(200);
-            }
+          var showErrorBox = function(msg) {
+            var box = $('<div>')
+              .addClass('alert')
+              .addClass('alert-danger')
+              .addClass('alert-dismissible')
+              .attr('role', 'alert');
+            var button = $('<button>')
+              .attr('type', 'button')
+              .addClass('close')
+              .attr('data-dismiss', 'alert')
+              .attr('aria-label', 'Close');
+            var closeIcon = $('<span>')
+              .attr('aria-hidden', 'true')
+              .html('&times;');
+            var message = $('<span>')
+              .html('<strong>Warning!</strong> ' + msg);
+            button.append(closeIcon);
+            box.append(button);
+            box.append(message);
+            $('#alertRegion').append(box);
+            box.delay(2000).hide(200);
+          }
 
-            try {
-                $('#output').val(interpret($('#code').val(),$('#input').val(),parseInt($('#maxIter').val()),($('#binaryButton').attr('aria-pressed') === 'true')));
-            } catch (e) {
-                showErrorBox(e);
-            }
+          try {
+            $('#output').val(interpret($('#code').val(), $('#input').val(), parseInt($('#maxIter').val()), ($('#binaryButton').attr('aria-pressed') === 'true')));
+          } catch (e) {
+            showErrorBox(e);
+          }
         });
         $('#clearButton').click(function() {
-            $('#input').val('');
-            $('#code').val('');
+          $('#input').val('');
+          $('#code').val('');
         });
         $('#binaryButton').click(function() {
-            $(this)
-                .toggleClass('btn-default')
-                .toggleClass('btn-success');
-            $('#binaryModeInfo').toggle(300);
+          $(this)
+            .toggleClass('btn-default')
+            .toggleClass('btn-success');
+          $('#binaryModeInfo').toggle(300);
 
-            if ($(this).attr('aria-pressed') == 'false') {
-                $(this).html('Binary mode: <strong>ON</strong>');
-            }
-            else {
-                $(this).html('Binary mode: <strong>OFF</strong>');
-            }
+          if ($(this).attr('aria-pressed') == 'false') {
+            $(this).html('Binary mode: <strong>ON</strong>');
+          } else {
+            $(this).html('Binary mode: <strong>OFF</strong>');
+          }
         });
         $('#binaryModeInfo').hide();
-    });
+      });
     </script>
     <hr>
     <footer>
-        &copy; 2015 <a href="//mooxmirror.io">mooxmirror.io</a>
+      <p>crafted with <i class="fa fa-heart"></i> by <a href="https://mooxmirror.github.io">mooxmirror</a></p>
     </footer>
-</div>
+  </div>
 </body>
+
 </html>
